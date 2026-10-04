@@ -1,119 +1,149 @@
+/*==================================================
+    TOKENS
+    Paleta del escudo + neutros claros
+==================================================*/
+
+:root {
+    /* Escudo */
+    --verde: #33b41c;
+    --amarillo: #E6E02A;
+    --azul-noche: #1C2233;
+    --blanco: #FFFFFF;
+
+    /* Derivados */
+    --verde-oscuro: #227e12;      /* texto y botones */
+    --verde-hover: rgba(49, 172, 28, 0.78);   /* relleno translúcido del hover */
+    --texto-suave: #4A5266;
+    --crema: #F3F6EA;
+    --crema-oscuro: #E6EBDD;
+    --borde: rgba(28, 34, 51, 0.12);
+}
+
+/* Todo en rem: deja el terreno listo para el control de tamaño de texto */
+html {
+    font-size: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Inter", "Segoe UI", sans-serif;
-    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    min-height: 100vh;
+    font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--azul-noche);
+    background: linear-gradient(160deg, #F6F8F0 0%, var(--crema-oscuro) 100%) fixed;
+}
+
+button,
+input,
+select,
+textarea {
+    font: inherit;
+}
+
+:where(a, button):focus-visible {
+    outline: 0.1875rem solid var(--azul-noche);
+    outline-offset: 0.1875rem;
 }
 
 /*==================================================
-    HEADER (sticky: se queda fijo arriba, el
-    contenido de abajo es lo que scrollea)
+    ENCABEZADO
 ==================================================*/
+
+body > header {
+    position: relative;
+    z-index: 100;
+}
 
 .HeaderBG {
     width: 100%;
-
-    background: linear-gradient(180deg,#212121 0%,#1A1A1A 100%);
-    border-bottom: 1px solid rgba(255,255,255,.05);
-    border-radius: 5px;
-
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-
-    box-shadow: 0 10px 25px rgba(0,0,0,.30);
+    background: linear-gradient(180deg, var(--blanco) 0%, var(--crema) 100%);
+    border-bottom: 1px solid var(--borde);
+    box-shadow: 0 0.5rem 1.5rem rgba(28, 34, 51, 0.12);
 }
 
 .HeaderTop {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 16px;
+    flex-wrap: wrap;
+    gap: 1.125rem;
+    padding: 1rem 1.75rem;
+}
 
-    padding: 16px 24px;
+.HeaderBG #Crest {
+    width: 4.5rem;
+    height: 4.5rem;
+    flex-shrink: 0;
+    object-fit: contain;
 }
 
 .HeaderBG #SchoolName {
-    color: #F2F2F2;
-    font-size: clamp(22px, 3vw, 42px);
-    font-weight: 700;
-    letter-spacing: .2px;
+    flex: 1 1 14rem;
+    min-width: 0;
 
     font-family: Cambria, Georgia, serif;
-
-    flex: 1 1 auto;
-    min-width: 0;
+    font-size: clamp(1.375rem, 1rem + 1.8vw, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: 0.01em;
+    color: var(--azul-noche);
 }
 
 /*==================================================
-    BOTON DE SESION Y AVATAR (estilo "outline")
+    BOTON DE SESION Y AVATAR
 ==================================================*/
 
 .LoginButtonBG {
-    background: transparent;
-    border: 1.5px solid #6C98CC;
-    border-radius: 12px;
-
-    height: 46px;
-    padding: 0 22px;
-
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    order: 2;
-
-    transition: .2s ease;
-}
-
-.LoginButtonBG:hover {
-    background: rgba(108,152,204,.10);
-    border-color: #8CBBFF;
-}
-
-.LoginButton {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
 }
 
 .LoginButton a {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    text-decoration: none;
-}
+    min-height: 3.5rem;
+    padding: 0 1.75rem;
 
-.LoginButton h2 {
-    color: #F2F2F2;
-    font-size: 17px;
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+    border-radius: 0.75rem;
+    font-size: 1.55rem;
     font-weight: 600;
+    text-decoration: none;
     white-space: nowrap;
+
+    box-shadow: 0 0.25rem 0.75rem rgba(47, 122, 34, 0.28);
+    transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.HeaderBG #Logo {
-    width: 26px;
-    height: 26px;
-    padding: 9px;
+.LoginButton a:hover {
+    background: var(--verde);
+    transform: translateY(-1px);
+}
 
-    border: 1.5px solid #6C98CC;
-    border-radius: 50%;
-    background: transparent;
+.HeaderBG #UserIcon {
+    width: 2.2rem;
+    height: 2.2rem;
+    padding: 0.6875rem;
+    flex-shrink: 0;
     box-sizing: content-box;
 
-    flex-shrink: 0;
-    order: 3;
+    background: var(--verde-oscuro);
+    border: 0.125rem solid var(--verde-oscuro);
+    border-radius: 50%;
 
-    transition: .2s ease;
+    transition: background-color 0.2s ease;
 }
 
-.HeaderBG #Logo:hover {
-    background: rgba(108,152,204,.10);
-    border-color: #8CBBFF;
+.HeaderBG #UserIcon:hover {
+    background: var(--verde);
 }
 
 /*==================================================
@@ -122,13 +152,9 @@
 
 .SubHeaderBG {
     width: 100%;
-
-    background: linear-gradient(180deg,#282828 0%,#212121 100%);
-    border-top: 1px solid rgba(255,255,255,.05);
-    border-bottom: 1px solid rgba(0,0,0,.4);
-    border-radius: 3px;
-
-    box-shadow: 0 8px 20px rgba(0,0,0,.25);
+    background: linear-gradient(180deg, var(--crema) 0%, var(--crema-oscuro) 100%);
+    border-top: 1px solid var(--borde);
+    box-shadow: 0 0.5rem 1.5rem rgba(28, 34, 51, 0.12);
 }
 
 .Pages {
@@ -136,68 +162,68 @@
     flex-wrap: wrap;
     justify-content: flex-start;
     position: relative;
-    text-decoration: none;
 }
 
 .Pages a {
-    text-decoration: none;
-}
-
-.Pages h2 {
-    text-decoration: none;
     flex: 0 0 auto;
-    width: 160px;
-
-    padding: 16px 8px;
-
-    font-size: 18px;
-    font-weight: 600;
-    letter-spacing: .2px;
+    width: 11rem;
+    padding: 1.125rem 0.5rem;
 
     display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
 
-    color: #B4B4B4;
+    font-size: 1.1875rem;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    text-decoration: none;
+
+    color: var(--verde-oscuro);
     cursor: pointer;
+
+    /* Crea su propio plano de apilado para que el relleno quede DETRÁS del texto */
     position: relative;
-    transition: color 0.2s ease, background-color 0.2s ease;
+    z-index: 0;
+    transition: color 0.25s ease;
 }
 
+/* Barra base de la navegación: verde con el amarillo del escudo al final */
 .UnderLine {
     width: 100%;
-    height: 5px;
+    height: 7px;
 
-    background: linear-gradient(90deg,#6C98CC,#4A78B0);
-    box-shadow: 0 0 12px rgba(108,152,204,.55);
+    background: linear-gradient(90deg, var(--verde) 0 70%, var(--verde) 70% 100%);
 
     position: absolute;
     bottom: 0;
     left: 0;
+    z-index: 1;
 }
 
-.Pages h2::after {
+/* Relleno del hover: sube desde abajo, sin dejar ninguna franja en reposo */
+.Pages a::after {
     content: "";
     position: absolute;
     left: 0;
     bottom: 0;
+    z-index: -1;
 
     width: 100%;
-    height: 5px;
+    height: 0;
 
-    background: rgba(108,152,204,.22);
+    background: var(--verde-hover);
 
-    transform: translateY(0);
-    transition: all 0.25s ease;
+    transition: height 0.25s ease;
 }
 
-.Pages h2:hover {
-    background-color: rgba(255,255,255,.03);
-    color: #F2F2F2;
+.Pages a:hover,
+.Pages a:focus-visible {
+    color: var(--blanco);
 }
 
-.Pages h2:hover::after {
+.Pages a:hover::after,
+.Pages a:focus-visible::after {
     height: 100%;
 }
 
@@ -205,45 +231,50 @@
     RESPONSIVE
 ==================================================*/
 
-@media (max-width: 700px){
-
-    .HeaderTop {
-        flex-wrap: wrap;
-        justify-content: center;
-        text-align: center;
-        padding: 16px;
-    }
-
-    .HeaderBG #SchoolName {
-        order: 1;
-        flex: 1 1 100%;
-        text-align: center;
-    }
-
-    .HeaderBG #Logo {
-        width: 22px;
-        height: 22px;
-    }
-
-    .Pages h2 {
-        width: 110px;
-        font-size: 14px;
-        padding: 12px 4px;
+/* Encabezado fijo solo en pantallas anchas */
+@media (min-width: 60rem) {
+    body > header {
+        position: sticky;
+        top: 0;
     }
 }
 
-@media (max-width: 480px){
+@media (max-width: 43.75rem) {
+
+    .HeaderTop {
+        padding: 1rem;
+    }
+
+    .HeaderBG #Crest {
+        width: 3.75rem;
+        height: 3.75rem;
+    }
+
+    .Pages a {
+        width: 7.5rem;
+        font-size: 1rem;
+        padding: 0.875rem 0.25rem;
+    }
+}
+
+@media (max-width: 30rem) {
 
     .Pages {
         flex-direction: column;
     }
 
-    .Pages h2 {
+    .Pages a {
         width: 100%;
-        padding: 14px 8px;
+        padding: 1rem 0.5rem;
     }
 
     .UnderLine {
         display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
     }
 }

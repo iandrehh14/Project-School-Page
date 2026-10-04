@@ -1,3 +1,22 @@
+/*==================================================
+    COLORES
+    Copia de los tokens de styles.css para que esta página
+    funcione aunque login.html no cargue styles.css.
+    Si cambia un color en styles.css, cámbielo aquí también.
+==================================================*/
+
+:root{
+    --verde:#33b41c;
+    --verde-oscuro:#227e12;
+    --amarillo:#E6E02A;
+    --azul-noche:#1C2233;
+    --blanco:#FFFFFF;
+    --texto-suave:#4A5266;
+    --crema:#F3F6EA;
+    --crema-oscuro:#E6EBDD;
+    --borde:rgba(28,34,51,0.12);
+}
+
 html{
     zoom:100%;
 }
@@ -22,7 +41,7 @@ html{
 }
 
 body{
-    background:#141414;
+    background:linear-gradient(160deg,#F6F8F0 0%,var(--crema-oscuro) 100%) fixed;
 }
 
 /*==================================================
@@ -35,9 +54,9 @@ body{
     min-height:100vh;
 
     background:
-        radial-gradient(circle at 20% 15%, rgba(108,152,204,0.10), transparent 45%),
-        radial-gradient(circle at 80% 85%, rgba(108,152,204,0.07), transparent 45%),
-        #171717;
+        radial-gradient(circle at 20% 15%, rgba(51,180,28,0.10), transparent 45%),
+        radial-gradient(circle at 80% 85%, rgba(51,180,28,0.07), transparent 45%),
+        var(--crema);
 
     display:flex;
     justify-content:center;
@@ -47,7 +66,7 @@ body{
 }
 
 /*==================================================
-    MARCO AZUL
+    MARCO VERDE
 ==================================================*/
 
 .LoginCardBG{
@@ -55,14 +74,14 @@ body{
     width:560px;
     min-height: 800px;
 
-    background:linear-gradient(160deg,#7FA8DA 0%,#5A83B8 55%,#4A6E9E 100%);
+    background:linear-gradient(160deg,#5AC944 0%,var(--verde) 55%,var(--verde-oscuro) 100%);
 
     border-radius:22px;
 
     padding:8px;
 
     box-shadow:
-    0px 20px 45px rgba(0,0,0,.55),
+    0px 20px 45px rgba(28,34,51,.25),
     0px 0px 0px 1px rgba(255,255,255,.04) inset;
 }
 
@@ -75,7 +94,7 @@ body{
     width:100%;
     height:795px;
 
-    background:linear-gradient(180deg,#262626 0%,#1E1E1E 100%);
+    background:linear-gradient(180deg,#FFFFFF 0%,var(--crema) 100%);
 
     border-radius:18px;
 
@@ -84,7 +103,7 @@ body{
     display:flex;
     flex-direction:column;
 
-    box-shadow: 0 1px 0 rgba(255,255,255,.03) inset;
+    box-shadow: 0 1px 0 rgba(255,255,255,.9) inset;
 }
 
 /*==================================================
@@ -111,9 +130,9 @@ body{
 
     border-radius:16px;
 
-    background:linear-gradient(150deg,#6C98CC,#3F6396);
+    background:linear-gradient(150deg,var(--verde),var(--verde-oscuro));
 
-    box-shadow:0 8px 20px rgba(90,143,209,.35);
+    box-shadow:0 8px 20px rgba(51,180,28,.35);
 
     margin-bottom:20px;
 }
@@ -124,9 +143,10 @@ body{
     stroke:#F4F7FB;
 }
 
-#SchoolName{
+.LoginTitle,
+.LoginBG #SchoolName{
 
-    color:#F2F2F2;
+    color:var(--azul-noche);
 
     text-align:center;
 
@@ -142,7 +162,7 @@ body{
 
 .LoginSubtitle{
 
-    color:#7C7C7C;
+    color:var(--texto-suave);
 
     font-size:14px;
 
@@ -151,6 +171,30 @@ body{
     text-transform:uppercase;
 
     margin-top:10px;
+}
+
+/*==================================================
+    MENSAJE DE ERROR
+==================================================*/
+
+.LoginError{
+
+    margin-bottom:22px;
+
+    padding:14px 16px;
+
+    background:#FDECEA;
+
+    border:1px solid #F2B8B5;
+    border-left-width:4px;
+
+    border-radius:12px;
+
+    color:#8C1D18;
+
+    font-size:14px;
+
+    font-weight:600;
 }
 
 /*==================================================
@@ -166,7 +210,7 @@ body{
 
     display:block;
 
-    color:#9C9C9C;
+    color:var(--texto-suave);
 
     font-size:13px;
 
@@ -195,7 +239,7 @@ body{
     width:19px;
     height:19px;
 
-    stroke:#6E6E6E;
+    stroke:#6B7388;
 
     transition:.25s;
 
@@ -208,13 +252,13 @@ body{
 
     height: 62px;
 
-    background:#1A1A1A;
+    background:#FFFFFF;
 
-    border:1.5px solid #333333;
+    border:1.5px solid #C5CDB8;
 
     border-radius:12px;
 
-    color:#F2F2F2;
+    color:var(--azul-noche);
 
     font-size:16px;
 
@@ -224,28 +268,28 @@ body{
 }
 
 .LoginCard input:hover{
-    border-color:#454545;
+    border-color:var(--verde);
 }
 
 .LoginCard input:focus{
 
     outline:none;
 
-    border-color:#6C98CC;
+    border-color:var(--verde-oscuro);
 
-    background:#1D1D1D;
+    background:#FFFFFF;
 
-    box-shadow:0 0 0 4px rgba(108,152,204,.14);
+    box-shadow:0 0 0 4px rgba(51,180,28,.2);
 }
 
 .LoginCard input:focus + svg,
 .InputWrap:focus-within svg{
-    stroke:#6C98CC;
+    stroke:var(--verde-oscuro);
 }
 
 .LoginCard input::placeholder{
 
-    color:#5E5E5E;
+    color:#7A8294;
 }
 
 /*==================================================
@@ -264,7 +308,7 @@ body{
 
     border-radius:12px;
 
-    background:linear-gradient(135deg,#6C98CC,#4A78B0);
+    background:linear-gradient(135deg,var(--verde-oscuro),#1B6A0E);
 
     color:#FFFFFF;
 
@@ -281,7 +325,7 @@ body{
     justify-content:center;
     gap:9px;
 
-    box-shadow:0 10px 24px rgba(90,143,209,.28);
+    box-shadow:0 10px 24px rgba(34,126,18,.28);
 
     transition:.22s ease;
 }
@@ -295,11 +339,11 @@ body{
 
 #LoginBtn:hover{
 
-    background:linear-gradient(135deg,#7BA4D6,#5883B8);
+    background:linear-gradient(135deg,var(--verde),var(--verde-oscuro));
 
     transform:translateY(-2px);
 
-    box-shadow:0 14px 28px rgba(90,143,209,.38);
+    box-shadow:0 14px 28px rgba(34,126,18,.38);
 }
 
 #LoginBtn:hover svg{
@@ -319,7 +363,7 @@ body{
 
     text-align:center;
 
-    color:#8A8A8A;
+    color:var(--texto-suave);
 
     font-size:14px;
 
@@ -329,7 +373,7 @@ body{
 
 .LoginFooter a{
 
-    color:#8CBBFF;
+    color:var(--verde-oscuro);
 
     font-weight:600;
 

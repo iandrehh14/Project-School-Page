@@ -4,42 +4,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SchoolProyect</title>
+    <title>{% block title %}Escuela Normal Superior de Medellín{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/content.css' %}?v={% now 'U' %}">
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
 
-    <header>
-        <nav>
-            <div class="HeaderBG">
-                <div class="HeaderTop">
-                    <h1 id ="SchoolName">Escuela Normal Superior</h1>
-                    <img id="Logo" src="{% static 'img/circle-user-round.svg' %}" alt="Logo">
-                    <div class="LoginButtonBG">
-                        <div class="LoginButton">
-                            <a href="{% url 'login' %}"><h2>Login</h2></a>
-                        </div>
+   <!-- Reemplaza el bloque <header> completo de base.html por este -->
+<!-- Reemplaza el bloque <header> completo de base.html por este -->
+<header>
+    <nav aria-label="Principal">
+        <div class="HeaderBG">
+            <div class="HeaderTop">
+                <img id="Crest" src="{% static 'img/Escudo IENSM.png' %}" alt="Escudo de la Escuela Normal Superior de Medellín">
+                <h1 id="SchoolName">Escuela Normal Superior de Medellín</h1>
+
+                <div class="LoginButtonBG">
+                    <div class="LoginButton">
+                        <a href="{% url 'login' %}">Login</a>
                     </div>
                 </div>
-                <div class="SubHeaderBG">
-                    <div class ="Pages">
-                        <a href="{% url 'index' %}"><h2>Inicio</h2></a>
-                        <h2>Materias</h2>
-                        <a href="{% url 'schedule' %}"><h2>Horario</h2></a>
-                        <h2>Instrucciones</h2>
+                <img id="UserIcon" src="{% static 'img/circle-user-round.svg' %}" alt="Perfil de usuario">
+            </div>
 
-                        <div class="UnderLine"></div>
-                    </div>
+            <div class="SubHeaderBG">
+                <div class="Pages">
+                    <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}>Inicio</a>
+                    <a href="#">Biblioteca</a>
+                    <a href="{% url 'schedule' %}" {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %}>Horario</a>
+                    <a href="#">Boletines</a>
+                    <a href="#">Equipo</a>
+                    <a href="#">Honores</a>
+
+                    <div class="UnderLine"></div>
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
-    {% block content %}
-    {% endblock %}
+    <main>
+        {% block content %}{% endblock %}
+    </main>
 
- 
+    <footer>
+        <p>&copy; {% now 'Y' %} Escuela Normal Superior de Medellín</p>
+    </footer>
 
     <script src="{% static 'js/script.js' %}"></script>
 </body>
