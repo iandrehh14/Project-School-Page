@@ -1,128 +1,103 @@
 {% extends 'main/base.html' %}
 {% load static %}
 
+{% block title %}Inicio | Escuela Normal Superior de Medellín{% endblock %}
+
 {% block content %}
+
+{% now "l j \d\e F \d\e Y" as fecha_hoy %}
 
 <div class="ContentBG">
 
-    <div class="NewsSection">
+    <section class="NewsSection" aria-labelledby="WelcomeText">
 
-        <h1 id="WelcomeText">Bienvenido, Juan Andres.</h1>
+        <h2 id="WelcomeText">Bienvenido, {{ user.get_full_name|default:user.username }}</h2>
 
-        <h2 id="DateText">
-            Jueves 18 de Junio del 2026 - Estas son las ultimas novedades.
-        </h2>
+        <p id="DateText">{{ fecha_hoy|capfirst }} - Estas son las últimas novedades.</p>
 
-        <h2 id="NewsText">Ultimas Novedades.</h2>
+        <h3 id="NewsText">Últimas novedades</h3>
 
-        <div class="CardNewsBG">
+        {% for c in comunicados %}
+        <article class="CardNewsBG">
 
-            <img id="AccountLogo" src="{% static 'img/circle-user-round.svg' %}" alt="Logo">
+            <div class="NewsHeader">
+                <img class="AccountLogo" src="{% static 'img/circle-user-round.svg' %}" alt="">
 
-            <h1 id="TeacherUserName">Prof. Diego Andres</h1>
+                <div class="TeacherInfo">
+                    <p class="TeacherUserName">
+                        {% if c.autor %}{% if c.autor.rol == "profesor" %}Prof. {% endif %}{{ c.autor.get_full_name|default:c.autor.username }}{% else %}Colegio{% endif %}
+                    </p>
+                    <p class="TeacherSubject">Para: {{ c.destinatarios }}</p>
+                </div>
 
-            <h2 id="TeacherSubject">Tecnologia</h2>
-
-            <h2 id="DateMessage">Hoy 12:30</h2>
-
-            <div class="TypeMessageBG">
-                <h1 id="TypeMessageText">Comunicado</h1>
+                <span class="DateMessage">
+                    {% if c.publicado|date:"Y-m-d" == hoy_iso %}Hoy {{ c.publicado|date:"H:i" }}{% else %}{{ c.publicado|date:"j M, H:i" }}{% endif %}
+                </span>
             </div>
 
-            <h1 id="TitleMessageText">
-                Examen mañana viernes! Recordatorio importante.
-            </h1>
+            <span class="TypeMessageBG">
+                <span class="TypeMessageText">{{ c.get_tipo_display }}</span>
+            </span>
 
-            <p id="ContentMessageText">
-                Recuerden que el examen de tecnologia se realizara el mañana viernes a las 8:00 am.
-                Es importante que estudien los temas vistos en clase y repasen los apuntes.
-                No se permiten dispositivos electronicos durante el examen. ¡Buena suerte a todos!
-            </p>
+            <h4 class="TitleMessageText">{{ c.titulo }}</h4>
 
-        </div>
-    </div>
+            <div class="ContentMessageText">{{ c.contenido|linebreaks }}</div>
+
+        </article>
+        {% empty %}
+        <div class="EmptyState">Por ahora no hay novedades para ti.</div>
+        {% endfor %}
+    </section>
 
 
-    <div class="RightColumn">
+    <aside class="RightColumn" aria-label="Información del día">
 
-        <div class="CardScheduleBG">
+        <section class="CardScheduleBG" aria-labelledby="ScheduleTitle">
 
             <div class="ScheduleHeader">
-                <h2 id="ScheduleTitle">Horario de Hoy</h2>
+                <h3 id="ScheduleTitle">Horario de hoy</h3>
             </div>
 
-            <div class="ScheduleList">
-
-                <div class="ScheduleItem">
+            <ul class="ScheduleList">
+                {% for c in clases %}
+                <li class="ScheduleItem">
                     <div>
-                        <h3 class="ScheduleSubject">Matemáticas</h3>
-                        <p class="ScheduleRoom">Prof. Daniel</p>
+                        <h4 class="ScheduleSubject">{{ c.asignatura }}</h4>
+                        <p class="ScheduleRoom">
+                            {% if user.rol == "profesor" %}Grupo {{ c.grupo }}{% else %}Prof. {{ c.profesor.get_full_name|default:c.profesor.username }}{% endif %}{% if c.salon %} · Salón {{ c.salon }}{% endif %}
+                        </p>
                     </div>
-                    <span class="ScheduleTime">7:00</span>
-                </div>
+                    <span class="ScheduleTime">{{ c.hora_inicio|time:"H:i" }}</span>
+                </li>
+                {% empty %}
+                <li class="EmptyState">
+                    {% if sin_grupo %}Aún no tienes un grupo asignado. Comunícate con la secretaría.{% else %}No hay clases programadas para hoy.{% endif %}
+                </li>
+                {% endfor %}
+            </ul>
 
-                <div class="ScheduleItem">
-                    <div>
-                        <h3 class="ScheduleSubject">Quimica</h3>
-                        <p class="ScheduleRoom">Prof. Mariana</p>
-                    </div>
-                    <span class="ScheduleTime">9:00</span>
-                </div>
+        </section>
 
-                <div class="ScheduleItem">
-                    <div>
-                        <h3 class="ScheduleSubject">Sociales</h3>
-                        <p class="ScheduleRoom">Prof. Yeison</p>
-                    </div>
-                    <span class="ScheduleTime">11:00</span>
-                </div>
-
-                <div class="ScheduleItem">
-                    <div>
-                        <h3 class="ScheduleSubject">Ed. Física</h3>
-                        <p class="ScheduleRoom">Prof. Jennifer</p>
-                    </div>
-                    <span class="ScheduleTime">14:00</span>
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="CardNoticesBG">
+        <section class="CardNoticesBG" aria-labelledby="NoticesTitle">
 
             <div class="ScheduleHeader">
-                <h2 id="NoticesTitle">Avisos</h2>
+                <h3 id="NoticesTitle">Avisos</h3>
             </div>
 
-            <div class="NoticesList">
+            <ul class="NoticesList">
+                {% for a in avisos %}
+                <li class="NoticeItem">
+                    <span class="NoticeDot" aria-hidden="true"></span>
+                    <p class="NoticeText">{{ a.texto }}</p>
+                </li>
+                {% empty %}
+                <li class="EmptyState">No hay avisos vigentes.</li>
+                {% endfor %}
+            </ul>
 
-                <div class="NoticeItem">
-                    <span class="NoticeDot"></span>
-                    <p class="NoticeText">
-                        Semanas de vacaciones del 19 de junio al 14 de julio
-                    </p>
-                </div>
+        </section>
 
-                <div class="NoticeItem">
-                    <span class="NoticeDot"></span>
-                    <p class="NoticeText">
-                        Pre Informe el proximo viernes despues de vacaciones
-                    </p>
-                </div>
-
-                <div class="NoticeItem">
-                    <span class="NoticeDot"></span>
-                    <p class="NoticeText">
-                        Reunión de padres el viernes 7 de junio
-                    </p>
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
+    </aside>
 </div>
 
 {% endblock %}

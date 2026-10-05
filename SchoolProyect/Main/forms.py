@@ -6,7 +6,7 @@ from .models import Usuario
 class UsuarioCreationForm(AdminUserCreationForm):
     class Meta(AdminUserCreationForm.Meta):
         model = Usuario
-        fields = ("username", "documento", "email", "first_name", "last_name", "rol")
+        fields = ("username", "documento", "email", "first_name", "last_name", "rol", "grupo")
 
 
 class UsuarioChangeForm(UserChangeForm):

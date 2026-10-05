@@ -11,47 +11,93 @@
 </head>
 <body>
 
-   <!-- Reemplaza el bloque <header> completo de base.html por este -->
-<!-- Reemplaza el bloque <header> completo de base.html por este -->
-<header>
-    <nav aria-label="Principal">
-        <div class="HeaderBG">
-            <div class="HeaderTop">
-                <img id="Crest" src="{% static 'img/Escudo IENSM.png' %}" alt="Escudo de la Escuela Normal Superior de Medellín">
-                <h1 id="SchoolName">Escuela Normal Superior de Medellín</h1>
+    <header>
+        <nav aria-label="Principal">
+            <div class="HeaderBG">
+                <div class="HeaderTop">
+                    <img id="Crest" src="{% static 'img/Escudo IENSM.png' %}" alt="Escudo de la Escuela Normal Superior de Medellín">
+                    <h1 id="SchoolName">Escuela Normal Superior de Medellín</h1>
 
-                <div class="LoginButtonBG">
-                    <div class="LoginButton">
-                        <a href="{% url 'login' %}">Login</a>
+                    <div class="HeaderActions">
+                        {% if user.is_authenticated %}
+                        <details class="UserMenu">
+                            <summary class="UserChip" aria-label="Menú de usuario">
+                                <span class="UserAvatar" aria-hidden="true">{% if user.first_name %}{{ user.first_name|slice:":1"|upper }}{{ user.last_name|slice:":1"|upper }}{% else %}{{ user.username|slice:":1"|upper }}{% endif %}</span>
+                                <span class="UserInfo">
+                                    <span class="UserName">{{ user.get_full_name|default:user.username }}</span>
+                                    <span class="UserRole">{{ user.get_rol_display }}</span>
+                                </span>
+                                <svg class="UserChevron" viewBox="0 0 24 24" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
+                            </summary>
+
+                            <div class="UserDropdown">
+                                <div class="UserDropdownHead">
+                                    <strong>{{ user.get_full_name|default:user.username }}</strong>
+                                    <span>{{ user.email }}</span>
+                                </div>
+
+                                <a href="#">
+                                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+                                    Mi perfil
+                                </a>
+                                <a href="#">
+                                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+                                    Configuración
+                                </a>
+
+                                <hr>
+
+                                <form method="post" action="{% url 'logout' %}">
+                                    {% csrf_token %}
+                                    <button type="submit" class="LogoutBtn">
+                                        <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>
+                                        Cerrar sesión
+                                    </button>
+                                </form>
+                            </div>
+                        </details>
+                        {% else %}
+                        <a class="LoginBtnHeader" href="{% url 'login' %}">
+                            <svg viewBox="0 0 24 24" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg>
+                            Iniciar sesión
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
-                <img id="UserIcon" src="{% static 'img/circle-user-round.svg' %}" alt="Perfil de usuario">
-            </div>
 
-            <div class="SubHeaderBG">
-                <div class="Pages">
-                    <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}>Inicio</a>
-                    <a href="#">Biblioteca</a>
-                    <a href="{% url 'schedule' %}" {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %}>Horario</a>
-                    <a href="#">Boletines</a>
-                    <a href="#">Equipo</a>
-                    <a href="#">Honores</a>
+                <div class="SubHeaderBG">
+                    <div class="Pages">
+                        <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}>Inicio</a>
+                        <a href="#">Biblioteca</a>
+                        <a href="{% url 'schedule' %}" {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %}>Horario</a>
+                        <a href="#">Boletines</a>
+                        <a href="#">Equipo</a>
+                        <a href="#">Honores</a>
 
-                    <div class="UnderLine"></div>
+                        <div class="UnderLine"></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
     <main>
         {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; {% now 'Y' %} Escuela Normal Superior de Medellín</p>
-    </footer>
-
     <script src="{% static 'js/script.js' %}"></script>
+    <script>
+        // Cierra el menú de usuario al hacer clic fuera o al pulsar Escape
+        (function () {
+            var menu = document.querySelector('.UserMenu');
+            if (!menu) return;
+            document.addEventListener('click', function (e) {
+                if (!menu.contains(e.target)) menu.removeAttribute('open');
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') menu.removeAttribute('open');
+            });
+        })();
+    </script>
 </body>
 </html>

@@ -26,6 +26,10 @@
             <form method="post" action="{% url 'login' %}">
                 {% csrf_token %}
 
+                {% if form.errors %}
+                    <p class="LoginError" role="alert">Usuario o contraseña incorrectos. Revisa los datos e inténtalo de nuevo.</p>
+                {% endif %}
+
                 <div class="InputGroup">
                     <label for="id">Identificación</label>
                     <div class="InputWrap">
