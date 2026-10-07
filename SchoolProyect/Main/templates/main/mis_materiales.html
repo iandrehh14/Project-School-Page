@@ -1,0 +1,45 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}Mis materiales{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/contenido.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="ContentPage" aria-labelledby="PanelTitle">
+    <header class="PanelHead">
+        <div>
+            <h1 id="PanelTitle">Mis materiales</h1>
+            <p>Lo que has publicado en la biblioteca.</p>
+        </div>
+        <a class="ContentBtn" href="{% url 'material_nuevo' %}">+ Subir material</a>
+    </header>
+
+    {% for mensaje in messages %}<p class="FormNotice" role="status">{{ mensaje }}</p>{% endfor %}
+    {% if sin_ciclo %}
+    <p class="FormNotice FormNotice--warn">Alguno de tus grupos aún no tiene ciclo asignado, así que no aparecen sus áreas. Avisa al personal del colegio.</p>
+    {% endif %}
+
+    {% if materiales %}
+    <div class="TableWrap">
+        <table class="PanelTable">
+            <thead><tr><th>Título</th><th>Área</th><th>Alcance</th><th>Fecha</th><th><span class="VisuallyHidden">Acciones</span></th></tr></thead>
+            <tbody>
+            {% for m in materiales %}
+                <tr>
+                    <td data-label="Título"><strong>{{ m.titulo }}</strong><small>{{ m.get_tipo_display }} · {{ m.etiqueta_formato }} · Periodo {{ m.periodo }}</small></td>
+                    <td data-label="Área">{{ m.area.nombre }}<small>{{ m.area.ciclo.nombre }}</small></td>
+                    <td data-label="Alcance">{% if m.todo_ciclo %}Todo el ciclo{% else %}{% for g in m.grupos.all %}{{ g.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %}</td>
+                    <td data-label="Fecha">{{ m.creado|date:"j M Y" }}</td>
+                    <td class="PanelActions">
+                        <a href="{% url 'material_editar' m.pk %}">Editar</a>
+                        <a class="Danger" href="{% url 'material_borrar' m.pk %}">Borrar</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="EmptyState">Todavía no has publicado nada. Pulsa «Subir material» para empezar.</p>
+    {% endif %}
+</section>
+{% endblock %}

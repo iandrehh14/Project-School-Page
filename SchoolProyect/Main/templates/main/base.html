@@ -7,6 +7,10 @@
     <title>{% block title %}Escuela Normal Superior de Medellín{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/styles.css' %}?v={% now 'U' %}">
     <link rel="stylesheet" href="{% static 'css/content.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/schedule.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/accessibility.css' %}?v={% now 'U' %}">
+    <link rel="stylesheet" href="{% static 'css/biblioteca.css' %}?v={% now 'U' %}">
+    <script src="{% static 'js/accessibility.js' %}?v={% now 'U' %}"></script>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -35,6 +39,13 @@
                                     <strong>{{ user.get_full_name|default:user.username }}</strong>
                                     <span>{{ user.email }}</span>
                                 </div>
+
+                                {% if user.rol == 'profesor' or user.rol == 'administrativo' or user.is_superuser %}
+                                <a href="{% url 'mis_materiales' %}">
+                                    <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+                                    Mis materiales
+                                </a>
+                                {% endif %}
 
                                 <a href="#">
                                     <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
@@ -68,7 +79,7 @@
                 <div class="SubHeaderBG">
                     <div class="Pages">
                         <a href="{% url 'index' %}" {% if request.resolver_match.url_name == 'index' %}aria-current="page"{% endif %}>Inicio</a>
-                        <a href="#">Biblioteca</a>
+                        <a href="{% url 'biblioteca' %}" {% if 'biblioteca' in request.resolver_match.url_name %}aria-current="page"{% endif %}>Biblioteca</a>
                         <a href="{% url 'schedule' %}" {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %}>Horario</a>
                         <a href="#">Boletines</a>
                         <a href="#">Equipo</a>

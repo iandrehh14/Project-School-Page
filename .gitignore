@@ -219,3 +219,5 @@ __marimo__/
 
 # Bases de datos locales
 *.sqlite3
+
+archivos_privados/

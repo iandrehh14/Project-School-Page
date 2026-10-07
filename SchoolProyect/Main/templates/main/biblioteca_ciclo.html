@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}{{ ciclo.nombre }} · Biblioteca{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/biblioteca.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="LibraryPage" aria-labelledby="LibraryTitle">    
+
+    <header class="LibraryHead">
+        <h1 id="LibraryTitle">{{ ciclo.nombre }}</h1>
+        <p>{% if ciclo.grados %}{{ ciclo.grados }} · {% endif %}Selecciona un área para buscar y descargar su material de estudio.</p>
+    </header>
+
+    {% if areas %}
+    <ul class="AreaGrid">
+        {% for area in areas %}
+        <li class="AreaCard">
+            {# Cuando exista la página de contenidos, este enlace apuntará a ella #}
+            <a href="{% url 'biblioteca_area' area.pk %}">
+                <span class="AreaIcon">{% include "main/_icono.html" with icono=area.icono %}</span>
+                <h2>{{ area.nombre }}</h2>
+                <span class="CycleButton">Entrar</span>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p class="EmptyState">Este ciclo aún no tiene áreas.</p>
+    {% endif %}
+</section>
+{% endblock %}

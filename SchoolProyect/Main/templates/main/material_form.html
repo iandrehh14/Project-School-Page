@@ -1,0 +1,72 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}{% if material %}Editar material{% else %}Subir material{% endif %}{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/contenido.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="ContentPage ContentPage--narrow" aria-labelledby="FormTitle">
+    <a class="ContentBack" href="{% url 'mis_materiales' %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        Mis materiales
+    </a>
+    <header class="ContentHead"><h1 id="FormTitle">{% if material %}Editar material{% else %}Subir material{% endif %}</h1></header>
+
+    {% if not form.fields.area.queryset.exists %}
+    <p class="FormNotice FormNotice--warn">No tienes áreas disponibles: tus grupos aún no tienen ciclo asignado. Avisa al personal del colegio.</p>
+    {% endif %}
+
+    <form class="FormCard" method="post" enctype="multipart/form-data" novalidate>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="Field">
+            <label for="{{ form.titulo.id_for_label }}">Título</label>
+            {{ form.titulo }}{{ form.titulo.errors }}
+        </div>
+        <div class="Field">
+            <label for="{{ form.descripcion.id_for_label }}">Descripción <small>(opcional)</small></label>
+            {{ form.descripcion }}{{ form.descripcion.errors }}
+        </div>
+
+        <div class="FieldRow">
+            <div class="Field"><label for="{{ form.tipo.id_for_label }}">Tipo</label>{{ form.tipo }}{{ form.tipo.errors }}</div>
+            <div class="Field"><label for="{{ form.periodo.id_for_label }}">Periodo</label>{{ form.periodo }}{{ form.periodo.errors }}</div>
+        </div>
+
+        <div class="Field">
+            <label for="{{ form.area.id_for_label }}">Área</label>
+            {{ form.area }}{{ form.area.errors }}
+        </div>
+
+        <fieldset class="Field" id="BloqueGrupos">
+            <legend>Grupos</legend>
+            <div class="GroupChips" id="ChipsGrupos">
+                {% for g in form.grupos %}
+                <label class="GroupChip" data-grupo="{{ g.data.value }}">{{ g.tag }}<span>{{ g.choice_label }}</span></label>
+                {% endfor %}
+            </div>
+            <label class="CheckLine">{{ form.todo_ciclo }} Todo el ciclo <small>(también los grupos que no dictas)</small></label>
+            {{ form.grupos.errors }}
+        </fieldset>
+        <p class="FormNotice" id="NotaTransversal" hidden>Este contenido es transversal: lo verá todo el colegio.</p>
+
+        <fieldset class="Field">
+            <legend>Contenido <small>(un archivo o un enlace)</small></legend>
+            {% if material and material.archivo %}<p class="FileCurrent">Archivo actual: <strong>{{ material.nombre_archivo }}</strong> — súbase otro para reemplazarlo.</p>{% endif %}
+            <label for="{{ form.archivo.id_for_label }}" class="FieldSub">Archivo <small>(PDF, Word, Excel, PowerPoint, imagen, ZIP, MP4 · máx. 25 MB)</small></label>
+            {{ form.archivo }}{{ form.archivo.errors }}
+            <label for="{{ form.enlace.id_for_label }}" class="FieldSub">…o enlace</label>
+            {{ form.enlace }}{{ form.enlace.errors }}
+        </fieldset>
+
+        {% if form.avisar %}<label class="CheckLine">{{ form.avisar }} {{ form.avisar.label }}</label>{% endif %}
+
+        <div class="FormActions">
+            <button type="submit" class="ContentBtn">{% if material %}Guardar cambios{% else %}Publicar{% endif %}</button>
+            <a class="ContentBtn ContentBtn--ghost" href="{% url 'mis_materiales' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{{ form.mapa|json_script:"mapa-ciclos" }}
+<script src="{% static 'js/contenido.js' %}?v={% now 'U' %}" defer></script>
+{% endblock %}

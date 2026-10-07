@@ -1,0 +1,235 @@
+/*==================================================
+    BIBLIOTECA
+    Usa los tokens de styles.css; todo en rem para que
+    la barra de accesibilidad escale la página completa.
+==================================================*/
+
+.LibraryPage {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 2.5rem 1.25rem 4.5rem;
+}
+
+.LibraryHead {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+.LibraryHead h1 {
+    color: var(--azul-noche);
+    font-size: clamp(2rem, 1.4rem + 2.4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+}
+
+.LibraryHead p {
+    margin-top: 0.625rem;
+    color: var(--texto-suave);
+    font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+}
+
+.LibraryBack {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0.75rem 0.5rem 0.25rem;
+
+    border-radius: 0.5rem;
+    color: var(--verde-oscuro);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.LibraryBack svg { width: 1.25rem; height: 1.25rem; }
+.LibraryBack:hover { text-decoration: underline; }
+
+/* Botón "Ver materias" / "Entrar" (el enlace es toda la tarjeta) */
+.CycleButton {
+    display: inline-block;
+    margin-top: auto;
+    padding: 0.5rem 1.25rem;
+
+    border: 1.5px solid var(--verde-oscuro);
+    border-radius: 0.75rem;
+    color: var(--verde-oscuro);
+    font-size: 1rem;
+    font-weight: 700;
+
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.CycleCard a:hover .CycleButton,
+.CycleCard a:focus-visible .CycleButton,
+.AreaCard a:hover .CycleButton,
+.AreaCard a:focus-visible .CycleButton {
+    background: var(--verde-oscuro);
+    color: var(--blanco);
+}
+
+/*==================================================
+    CICLOS: 4 a los lados y 1 al centro
+==================================================*/
+
+.CycleGrid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-areas:
+        "a c b"
+        "d c e";
+    gap: 1.5rem;
+}
+
+.CycleCard:nth-child(1) { grid-area: a; }
+.CycleCard:nth-child(2) { grid-area: b; }
+.CycleCard:nth-child(3) { grid-area: d; }
+.CycleCard:nth-child(4) { grid-area: e; }
+.CycleCard--centro      { grid-area: c; }
+
+.CycleCard a,
+.AreaCard a {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    height: 100%;
+    padding: 1.75rem;
+
+    background: linear-gradient(180deg, #FBFCF7 0%, var(--crema) 100%);
+    border: 1px solid var(--borde);
+    border-radius: 1.25rem;
+    box-shadow: 0 0.75rem 1.75rem rgba(28, 34, 51, 0.12);
+    color: var(--azul-noche);
+    text-decoration: none;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.CycleCard a:hover,
+.CycleCard a:focus-visible,
+.AreaCard a:hover,
+.AreaCard a:focus-visible {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 1.25rem 2.25rem rgba(28, 34, 51, 0.18);
+}
+
+.CycleBadge {
+    padding: 0.25rem 0.875rem;
+
+    background: var(--verde-oscuro);
+    border-radius: 0.5rem;
+    color: var(--blanco);
+    font-size: 0.9375rem;
+    font-weight: 700;
+}
+
+.CycleCard h2 {
+    margin-top: 1rem;
+    font-size: 1.625rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.CycleCard p {
+    margin: 0.5rem 0 1.5rem;
+    color: var(--texto-suave);
+    font-size: 1.0625rem;
+    line-height: 1.45;
+}
+
+/* La tarjeta central es más alta: contenido centrado */
+.CycleCard--centro a {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(180deg, #FFFFFF 0%, var(--crema) 100%);
+    border-color: rgba(34, 126, 18, 0.35);
+}
+
+.CycleCard--centro h2 { font-size: 1.875rem; }
+.CycleCard--centro .CycleButton { margin-top: 0; }
+
+/*==================================================
+    ÁREAS DE UN CICLO
+==================================================*/
+
+.AreaGrid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem;
+}
+
+.AreaCard a {
+    align-items: center;
+    padding: 0 0 1.5rem;
+    overflow: hidden;
+    text-align: center;
+}
+
+/* Franja verde superior con el ícono dentro del círculo blanco */
+.AreaIcon {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    padding: 1.75rem 0;
+
+    background: linear-gradient(180deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+    color: var(--verde-oscuro);
+}
+
+.AreaIcon svg {
+    box-sizing: content-box;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 1.125rem;
+
+    background: #FFFFFF;
+    border-radius: 50%;
+    box-shadow: 0 0.5rem 1rem rgba(28, 34, 51, 0.25);
+}
+
+.AreaCard h2 {
+    margin: 1.25rem 1rem 0;
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.AreaCard p {
+    margin: 0.375rem 1rem 0;
+    color: var(--texto-suave);
+    font-size: 1.0625rem;
+}
+
+.AreaCard .CycleButton { margin-top: 1.25rem; }
+
+/*==================================================
+    RESPONSIVE
+==================================================*/
+
+@media (max-width: 56rem) {
+    .AreaGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 48rem) {
+    .CycleGrid {
+        grid-template-columns: 1fr;
+        grid-template-areas: none;
+    }
+
+    .CycleCard:nth-child(n),
+    .CycleCard--centro { grid-area: auto; }
+
+    /* El central va primero en pantallas angostas */
+    .CycleCard--centro { order: -1; }
+}
+
+@media (max-width: 30rem) {
+    .AreaGrid { grid-template-columns: 1fr; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .CycleCard a, .AreaCard a, .CycleButton { transition: none; }
+}

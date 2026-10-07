@@ -1,0 +1,101 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}{{ area.nombre }} · Biblioteca{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/contenido.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="ContentPage" aria-labelledby="AreaTitle">
+    <a class="ContentBack" href="{% url 'biblioteca_ciclo' area.ciclo.pk %}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+        {{ area.ciclo.nombre }}
+    </a>
+
+    <header class="ContentHead">
+        <h1 id="AreaTitle">{{ area.nombre }}</h1>
+        {% if area.detalle %}<p>{{ area.detalle }}</p>{% endif %}
+    </header>
+
+    {% if user.rol == 'profesor' or user.rol == 'administrativo' or user.is_superuser %}
+    <p class="PublishRow"><a class="ContentBtn" href="{% url 'material_nuevo' %}?area={{ area.pk }}">+ Subir material a esta área</a></p>
+    {% endif %}
+
+    <form class="SearchForm" method="get" role="search" data-autosubmit>
+        <div class="SearchBar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="search" name="q" value="{{ filtros.q }}" placeholder="Buscar por título, descripción o profesor…" aria-label="Buscar material">
+            <button type="submit">Buscar</button>
+        </div>
+
+        <div class="FilterRow">
+            <select name="grupo" aria-label="Grado">
+                <option value="">Todos los grados</option>
+                {% for g in grupos %}<option value="{{ g.pk }}" {% if filtros.grupo == g.pk|stringformat:"s" %}selected{% endif %}>{{ g.nombre }}</option>{% endfor %}
+            </select>
+            <select name="periodo" aria-label="Periodo">
+                <option value="">Todos los periodos</option>
+                {% for n in periodos %}<option value="{{ n }}" {% if filtros.periodo == n|stringformat:"s" %}selected{% endif %}>Periodo {{ n }}</option>{% endfor %}
+            </select>
+            <select name="tipo" aria-label="Tipo de material">
+                <option value="">Todos los tipos</option>
+                {% for valor, nombre in tipos %}<option value="{{ valor }}" {% if filtros.tipo == valor %}selected{% endif %}>{{ nombre }}</option>{% endfor %}
+            </select>
+            {% if hay_filtros %}<a class="FilterClear" href="{% url 'biblioteca_area' area.pk %}">Limpiar</a>{% endif %}
+        </div>
+    </form>
+
+    <p class="ResultCount" role="status">{{ pagina.paginator.count }} material{{ pagina.paginator.count|pluralize:"es" }}</p>
+
+    {% if pagina %}
+    <ul class="MaterialGrid">
+        {% for m in pagina %}
+        <li class="MaterialCard" data-tipo="{{ m.tipo }}">
+            <div class="MaterialBand">
+                <span class="MaterialFormat">{{ m.etiqueta_formato }}</span>
+                <span class="MaterialTipo">{{ m.get_tipo_display }}</span>
+                {% if m.es_nuevo %}<span class="MaterialNew">Nuevo</span>{% endif %}
+            </div>
+            <div class="MaterialBody">
+                <h2>{{ m.titulo }}</h2>
+                {% if m.descripcion %}<p class="MaterialDesc">{{ m.descripcion }}</p>{% endif %}
+                <ul class="MaterialMeta">
+                    {% if m.profesor %}<li>{{ m.profesor.get_full_name|default:m.profesor.username }}</li>{% endif %}
+                    <li>{% if m.todo_ciclo %}Todo el ciclo{% else %}{% for g in m.grupos.all %}{{ g.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}{% endif %} · Periodo {{ m.periodo }}</li>
+                    <li>{{ m.creado|date:"j M Y" }}{% if m.archivo %} · {{ m.tamano|filesizeformat }}{% endif %}</li>
+                </ul>
+
+                {% if user.is_authenticated %}
+                    {% if m.archivo %}
+                    <a class="ContentBtn" href="{% url 'material_descargar' m.pk %}">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><path d="m7 11 5 5 5-5"/><path d="M5 21h14"/></svg>
+                        Descargar
+                    </a>
+                    {% else %}
+                    <a class="ContentBtn" href="{{ m.enlace }}" target="_blank" rel="noopener noreferrer">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+                        Abrir enlace
+                    </a>
+                    {% endif %}
+                {% else %}
+                    <a class="ContentBtn ContentBtn--ghost" href="{% url 'login' %}?next={{ request.get_full_path|urlencode }}">Inicia sesión para descargar</a>
+                {% endif %}
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+
+    {% if pagina.paginator.num_pages > 1 %}
+    <nav class="Pager" aria-label="Páginas">
+        {% if pagina.has_previous %}<a href="?{{ consulta }}&page={{ pagina.previous_page_number }}">‹ Anterior</a>{% endif %}
+        <span>Página {{ pagina.number }} de {{ pagina.paginator.num_pages }}</span>
+        {% if pagina.has_next %}<a href="?{{ consulta }}&page={{ pagina.next_page_number }}">Siguiente ›</a>{% endif %}
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <p class="EmptyState">
+        {% if hay_filtros %}Ningún material coincide con tu búsqueda.{% else %}Tus profesores aún no han publicado material en esta área.{% endif %}
+    </p>
+    {% endif %}
+</section>
+<script src="{% static 'js/contenido.js' %}?v={% now 'U' %}" defer></script>
+{% endblock %}

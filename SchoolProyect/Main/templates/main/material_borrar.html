@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}Borrar material{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/contenido.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="ContentPage ContentPage--narrow">
+    <form class="FormCard" method="post">
+        {% csrf_token %}
+        <h1>¿Borrar este material?</h1>
+        <p><strong>{{ material.titulo }}</strong> dejará de estar disponible para los estudiantes. No se puede deshacer.</p>
+        <div class="FormActions">
+            <button type="submit" class="ContentBtn ContentBtn--danger">Sí, borrar</button>
+            <a class="ContentBtn ContentBtn--ghost" href="{% url 'mis_materiales' %}">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

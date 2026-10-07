@@ -1,0 +1,271 @@
+/*==================================================
+    BARRA DE ACCESIBILIDAD
+    Los tamaños de la barra van en px a propósito: así los
+    botones no crecen ni se encogen cuando cambia el texto.
+==================================================*/
+
+.A11yBar {
+    position: fixed;
+    top: 50%;
+    right: 0;
+    z-index: 900;
+    transform: translateY(-50%);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 10px 8px 10px 10px;
+
+    background: linear-gradient(180deg, var(--verde) 0%, var(--verde-oscuro) 100%);
+    border-radius: 16px 0 0 16px;
+    box-shadow: -4px 8px 24px rgba(28, 34, 51, 0.3);
+}
+
+.A11yBar button {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+
+    background: var(--blanco);
+    color: var(--verde-oscuro);
+    border: 0;
+    border-radius: 12px;
+    cursor: pointer;
+
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1;
+
+    transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.A11yBar button:hover {
+    transform: translateX(-2px);
+}
+
+.A11yBar button[aria-disabled="true"] {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.A11yBar button[aria-disabled="true"]:hover {
+    transform: none;
+}
+
+.A11yBar button[aria-pressed="true"] {
+    background: var(--amarillo);
+    color: #1C2233;
+}
+
+.A11yBar button:focus-visible {
+    outline: 3px solid #FFFFFF;
+    outline-offset: 0;
+    box-shadow: 0 0 0 6px #000000;
+}
+
+.A11yBar sup {
+    margin-left: 1px;
+    font-size: 13px;
+    font-weight: 800;
+    vertical-align: super;
+}
+
+/* Texto solo para lectores de pantalla */
+.A11yStatus {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+@media (max-width: 37.5rem) {
+    .A11yBar {
+        gap: 6px;
+        padding: 8px 6px 8px 8px;
+    }
+
+    .A11yBar button {
+        width: 40px;
+        height: 40px;
+        font-size: 19px;
+    }
+}
+
+@media print {
+    .A11yBar {
+        display: none;
+    }
+}
+
+/*==================================================
+    ALTO CONTRASTE
+    Negro, blanco y amarillo. Se activa con data-contraste="alto"
+    en <html>. Primero se invierten los colores base del sitio y
+    luego se corrigen los pocos colores escritos "a mano".
+==================================================*/
+
+:root[data-contraste="alto"] {
+    --verde: #FFE600;
+    --verde-oscuro: #FFE600;
+    --verde-hover: rgba(255, 230, 0, 0.92);
+    --amarillo: #FFE600;
+    --azul-noche: #FFFFFF;
+    --blanco: #000000;
+    --texto-suave: #EDEDED;
+    --crema: #0B0B0B;
+    --crema-oscuro: #161616;
+    --borde: rgba(255, 255, 255, 0.6);
+}
+
+:root[data-contraste="alto"] body {
+    background: #000000;
+}
+
+/* Barra */
+:root[data-contraste="alto"] .A11yBar {
+    background: #FFE600;
+    box-shadow: -4px 8px 24px rgba(0, 0, 0, 0.6), 0 0 0 2px #FFFFFF;
+}
+
+:root[data-contraste="alto"] .A11yBar button[aria-pressed="true"] {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+/* Menú de usuario */
+:root[data-contraste="alto"] .UserDropdown .LogoutBtn {
+    color: #FF9E9E;
+}
+
+:root[data-contraste="alto"] .UserDropdown .LogoutBtn svg {
+    stroke: #FF9E9E;
+}
+
+:root[data-contraste="alto"] .UserDropdown .LogoutBtn:hover {
+    background: #3A0000;
+}
+
+/* Portada */
+:root[data-contraste="alto"] .EmptyState,
+:root[data-contraste="alto"] .DialogEmpty {
+    background: #000000;
+    border-color: #FFFFFF;
+}
+
+/* Inicio de sesión */
+:root[data-contraste="alto"] .LoginCardBG {
+    background: #FFE600;
+}
+
+:root[data-contraste="alto"] .LoginCard {
+    background: #000000;
+}
+
+:root[data-contraste="alto"] .LoginCrest svg {
+    stroke: #000000;
+}
+
+:root[data-contraste="alto"] .LoginCard input {
+    background: #000000;
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .LoginCard input::placeholder {
+    color: #BDBDBD;
+}
+
+:root[data-contraste="alto"] .InputWrap svg {
+    stroke: #DDDDDD;
+}
+
+:root[data-contraste="alto"] #LoginBtn {
+    background: #FFE600;
+    color: #000000;
+}
+
+:root[data-contraste="alto"] #LoginBtn svg {
+    stroke: #000000;
+}
+
+/* Horarios */
+:root[data-contraste="alto"] .SchedulePage {
+    --verde-claro: #000000;
+    --dorado-claro: #000000;
+    --dorado: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .GradeGrid {
+    background: #000000;
+    border-color: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .GradeCircle {
+    border: 3px solid #FFFFFF;
+    box-shadow: none;
+}
+
+:root[data-contraste="alto"] .GradeItem::after {
+    background: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .GradeSpace .GradeCircle {
+    background: #FFE600;
+    color: #000000;
+}
+
+:root[data-contraste="alto"] .ScheduleDialogBody {
+    background: #000000;
+    border-color: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .DialogClose {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+:root[data-contraste="alto"] .ScheduleTableWrap {
+    border-color: #FFFFFF;
+}
+
+:root[data-contraste="alto"] .ScheduleTable {
+    background: #000000;
+}
+
+:root[data-contraste="alto"] .ScheduleTable th,
+:root[data-contraste="alto"] .ScheduleTable td {
+    border-color: rgba(255, 255, 255, 0.55);
+}
+
+:root[data-contraste="alto"] .ScheduleTable thead th,
+:root[data-contraste="alto"] .ScheduleTable tbody th {
+    background: #000000;
+}
+
+:root[data-contraste="alto"] .ScheduleTable .SpecialCell {
+    background: #FFFFFF;
+    color: #000000;
+}
+
+:root[data-contraste="alto"] .ScheduleTable .BreakRow th,
+:root[data-contraste="alto"] .ScheduleTable .BreakRow td {
+    background: #FFE600;
+    color: #000000;
+}
+
+:root[data-contraste="alto"] .SubjectIcon {
+    background: #FFE600;
+    color: #000000;
+    box-shadow: none;
+}
+
+:root[data-contraste="alto"] .SubjectLink:hover .SubjectIcon,
+:root[data-contraste="alto"] .SubjectLink:focus-visible .SubjectIcon {
+    background: #FFFFFF;
+    color: #000000;
+}

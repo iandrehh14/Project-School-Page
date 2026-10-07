@@ -1,0 +1,40 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}Biblioteca{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'css/biblioteca.css' %}?v={% now 'U' %}">{% endblock %}
+
+{% block content %}
+<section class="LibraryPage" aria-labelledby="LibraryTitle">
+    <header class="LibraryHead">
+        <h1 id="LibraryTitle">Ciclos académicos</h1>
+        <p>Elige tu ciclo para encontrar el material que publican tus profesores.</p>
+    </header>
+
+    {% if laterales or centro %}
+    <ul class="CycleGrid">
+        {% for ciclo in laterales %}
+        <li class="CycleCard">
+            <a href="{% url 'biblioteca_ciclo' ciclo.pk %}">
+                {% if ciclo.grados %}<span class="CycleBadge">{{ ciclo.grados }}</span>{% endif %}
+                <h2>{{ ciclo.nombre }}</h2>
+                <p>{{ ciclo.descripcion }}</p>
+                <span class="CycleButton">Ver materias</span>
+            </a>
+        </li>
+        {% endfor %}
+        {% if centro %}
+        <li class="CycleCard CycleCard--centro">
+            <a href="{% url 'biblioteca_ciclo' centro.pk %}">
+                <span class="CycleBadge">{{ centro.grados|default:"Todos los grados" }}</span>
+                <h2>{{ centro.nombre }}</h2>
+                <p>{{ centro.descripcion }}</p>
+                <span class="CycleButton">Ver materias</span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+    {% else %}
+    <p class="EmptyState">Aún no hay ciclos. El personal del colegio puede crearlos desde /admin.</p>
+    {% endif %}
+</section>
+{% endblock %}

@@ -27,7 +27,14 @@ SECRET_KEY = 'django-insecure-uh!t6ha@+#s9z%=c))c%o4f*w(n)v*yann!#d6pl2&$^*95n0%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["localhost", "127.0.0.1", ".ngrok-free.app", ".ngrok-free.dev", ".ngrok.app", ".ngrok.io"]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.app",
+    "https://*.ngrok-free.dev",
+    "https://*.ngrok.app",
+    "https://*.ngrok.io",
+]
 
 
 # Application definition
@@ -125,3 +132,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+    # Archivos subidos por los profesores. NO se publican por URL: se descargan
+    # solo mediante la vista protegida (exige iniciar sesión).
+MEDIA_ROOT = BASE_DIR / "archivos_privados"
